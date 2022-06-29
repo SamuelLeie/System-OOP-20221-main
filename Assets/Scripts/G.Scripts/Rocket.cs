@@ -4,10 +4,12 @@ using UnityEngine.Serialization;
 
 public class Rocket : MonoBehaviour 
 {
+	public float bombRadius = 10f;
+	public float bombForce = 100f;
+	
+	
 	public Transform target;
-	public float splashRange = 3.0f;
-	public float damage;
-	public GameObject enemy;
+	
 	
 	[FormerlySerializedAs("MissileSpeed")] public float missileSpeed;
 	private float turn = 2.5f;
@@ -43,6 +45,25 @@ public class Rocket : MonoBehaviour
 
 	private void Explode()
 	{
+		Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, bombRadius, 1 << LayerMask.NameToLayer("Enemies"));
+		
+		foreach(Collider2D en in enemies)
+		{
+			// Check if it has a rigidbody (since there is only one per enemy, on the parent).
+			Rigidbody2D rb = en.GetComponent<Rigidbody2D>();
+			if(rb != null && rb.tag == "Enemy")
+			{
+				// Find the Enemy script and set the enemy's health to zero.
+				rb.gameObject.GetComponent<EnemyBase>()._HP = 0;
+
+				// Find a vector from the bomb to the enemy.
+				Vector3 deltaPos = rb.transform.position - transform.position;
+
+				// Apply a force in this direction with a magnitude of bombForce.
+				Vector3 force = deltaPos.normalized * bombForce;
+				rb.AddForce(force);
+			}
+		}
 		CancelInvoke("Explode");
 		Destroy(gameObject);
 	}
