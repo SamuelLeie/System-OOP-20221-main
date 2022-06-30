@@ -5,68 +5,68 @@ using UnityEngine;
 public class EnemyBase : PhysicsController , IPoolable
 {
     public float spawnCD { get; protected set; }
-    public string name { get; protected set; }
-    protected int maxHP 
-    {
-        get
-        {
-            return _maxHP;
-        }
-    }
-    public int _maxHP;
-    protected int HP
-    {
-        get
-        {
-            return _HP;
-        }
-        set { }
-    }
-    public int _HP;
+    public string ename { get; protected set; }
+    
+    [SerializeField]
+    
 
+    public int _HP = 100;
 
+    protected int hpMax = 100;
+
+    public Color color0;
+
+    public Color color1;
     public float speed { get; protected set;}
-    public float damage { get;  protected set; }
+    public int damage { get;  protected set; }
     [SerializeField]
     protected GameObject player;
     [SerializeField]
     protected Transform pTrans;
+    PlayerController pC;
+    protected SpriteRenderer enemyRender;
+    protected Vector2 initialPos;
+    public UIManager manager;
     public EnemyDTO edto;
 
-    protected Vector2 initialPos;
     protected override void Awake()
     {
         base.Awake();
         spawnCD = 5f;
         player = GameObject.FindGameObjectWithTag("Player");
         pTrans = player.GetComponent<Transform>();
+        pC = player.GetComponent<PlayerController>();
         InitDto(edto);
         gameObject.tag = "Enemy";
         rb.freezeRotation = true;
+        //Debug.Log(_HP);
+        enemyRender = GetComponent<SpriteRenderer>();
+        manager = FindObjectOfType<UIManager>();
+        manager.SetUPEnemyUI();
+        manager.SetUpEnemyHealth(gameObject, _HP);
     }
-    private void Start()
+    private void Update()
     {
-        
+        enemyRender.color = Color.Lerp(color0, color1, (float) _HP / hpMax);
     }
 
     protected virtual void LateUpdate()
     {
-        FollowPlayer();
+        //FollowPlayer();
+        //InputDamage();
     }
-    public void TakeDamage (int pDamage)
+    public virtual void TakeDamage (int pDamage)
     {
         //recebe o damage do player e desconta do HP
-        _HP =- pDamage;
-    }
-
-    public void DoDamage()
+        _HP = _HP - pDamage;
+        //manager.OnEnemyDamaged(this.gameObject, _HP);
+        //Debug.Log(_HP);
+        Death();
+    }   
+    public virtual void FollowPlayer()
     {
-        //pega o script do player e passa o dano como parâmetro o damage como dano no jogador
-    }
-    public void FollowPlayer()
-    {
-        //Vector3 posFinal =  pTrans.position - tf.position ;
-        //rb.MovePosition(tf.position + (posFinal.normalized*speed *Time.deltaTime));
+        transform.position = Vector2.MoveTowards(transform.position, pTrans.position, speed * Time.deltaTime);
+        
         //faz a diferença entre a posição do inimigo e do player, e passa a posição atual do inimigo, com uma 
         //soma da diferença de posições para seguir o player. Precisa do time.deltatime senão buga. 
     }
@@ -76,48 +76,61 @@ public class EnemyBase : PhysicsController , IPoolable
     public virtual void InitDto(EnemyDTO dto)
     {
         this.name = dto.name;
-        this.HP = dto._HP;
-        this._maxHP = dto._maxHP;
+        //this._HP = dto._HP;
+        //this._maxHP = dto._maxHP;
         this.speed = dto.speed;
         this.damage = dto.damage;
     }
 
-    public void TurnOn()
+    public virtual void TurnOn()
     {
+        _HP = 100;
         gameObject.SetActive(true);
     }
 
-    public void Recycle()
+    public virtual void Recycle()
     {
         gameObject.SetActive(false);
     }
 
-    protected void SendToPool()
+    protected virtual void SendToPool()
     {
-        //Factory.Instance.ReturnObject(FactoryItem.SquareEnemy, this);
+        Factory.Instance.ReturnObject(FactoryItem.SquareEnemy, this);
     }
-
-    //protected void init(float speed)
-    //{
-    //    this.speed=speed;
-
-    //    initialPos = tf.position;
-    //}
 
     public void init(Vector2 position, Quaternion rotation)
     {
         tf.position = position;
         tf.rotation = rotation;
+        //this._HP = hp;
         //initialPos = tf.position;
         //init(speed);
     }
     
-     private void Death()
+     protected virtual void Death()
      {
          if(_HP <= 0)
          {
             SendToPool();
          }
      }
-     
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        { 
+            pC.TakeDamage(this.damage);
+            SendToPool();
+        }
+    }
+    
+
+    //private void InputDamage()
+    //{
+    //    if (InputState.FireButton == true)
+    //    {
+    //        TakeDamage(10);
+    //        Debug.Log("EnemyDamage");
+    //    }
+    //}
 }

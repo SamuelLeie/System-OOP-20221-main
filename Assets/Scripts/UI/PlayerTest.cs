@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerTest : MonoBehaviour
 {
-    public int maxHealth = 10;
+    public int maxHealth = 100;
     public int maxAmmo = 20;
     public float reloadT;
     public int currentAmmo;
@@ -21,17 +21,17 @@ public class PlayerTest : MonoBehaviour
         reloadT = 1;
         currentHealth = maxHealth;
         currentAmmo = maxAmmo;
-        uiManager.SetUpHealth(maxHealth);
+        //uiManager.SetUpHealth(maxHealth);
         uiManager.SetUpWeapon(maxAmmo, reloadT);
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            currentHealth--;
-            uiManager.OnTamageTaken(currentHealth);
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    currentHealth--;
+        //    uiManager.OnTamageTaken(currentHealth);
+        //}
 
         if (Input.GetKeyDown(KeyCode.R) || currentAmmo == 0)
         {

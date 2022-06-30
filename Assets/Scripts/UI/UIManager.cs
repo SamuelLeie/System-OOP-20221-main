@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         SetUpUI();
+        SetUPEnemyUI();
     }
 
     private void SetUpUI()
@@ -30,6 +31,10 @@ public class UIManager : MonoBehaviour
         healthBar = mainCanvas.GetComponentInChildren<HealthBar>();
         reloadIcon = mainCanvas.GetComponentInChildren<ReloadIcon>();
         ammoBar = mainCanvas.GetComponentInChildren<AmmoBar>();
+    }
+
+    public void SetUPEnemyUI()
+    {
         prefabFloatingDMG = Resources.Load<GameObject>("Prefabs/UIPrefabs/FloatingObject");
         prefabEnemyHPBar = Resources.Load<GameObject>("Prefabs/UIPrefabs/EnemyHealthBar");
     }
@@ -47,6 +52,11 @@ public class UIManager : MonoBehaviour
     public void SetUpHealth(int maxHealth)
     {
         healthBar.SetMaxHealth(maxHealth);
+    }
+
+    public void SetUpEnemyHealth(HealthBar EnemyhealthBar, int maxHealth)
+    {
+        EnemyhealthBar.SetMaxHealth(maxHealth);
     }
 
     //CHAMAR QUANDO INIMIGO LEVA DANO PELOS TIROS - CRIA DANOS FLUTUANTES
@@ -97,8 +107,9 @@ public class UIManager : MonoBehaviour
     //CHAMAR QUANDO INIMIGO LEVAR DANO - ATUALIZA BARRA DE VIDA DELE
     public void OnEnemyDamaged(GameObject enemy, int enemyCurrentHealth)
     {
-        HealthBar enemyHPBar = enemy.transform.GetChild(0).GetComponentInChildren<HealthBar>();
-        enemyHPBar.SetHealth(enemyCurrentHealth);
+        //HealthBar enemyHPBar = enemy.transform.GetChild(0).GetComponentInChildren<HealthBar>();
+        HealthBar enemyHPBar = enemy.GetComponentInChildren<HealthBar>();
+        SetUpEnemyHealth(enemyHPBar, enemyCurrentHealth);
 
     }
 }

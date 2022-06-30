@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 
 [System.Serializable]
-public abstract class Weapon : Item
+public class Weapon : Item
 {
     protected Transform bulletRespawn;
 
@@ -22,6 +22,8 @@ public abstract class Weapon : Item
 
     private bool isFireRateCooldown;
 
+    
+
     public bool CanFire 
     { 
         get
@@ -33,7 +35,7 @@ public abstract class Weapon : Item
     protected override void Awake()
     {
         base.Awake();
-
+        gameObject.tag = "Weapon";
         //bulletPrefab = Resources.Load<BulletController>("Prefabs/Bullet");
 
         Transform[] children = tf.GetComponentsInChildren<Transform>();
@@ -79,13 +81,14 @@ public abstract class Weapon : Item
         StartCoroutine(FireRateCooldown());
 
         CreateBullets();
+        Debug.Log(this.Damage);
     }
 
     protected virtual void CreateBullets()
     {
         GameObject go = Factory.Instance.GetObject(FactoryItem.Bullet);
         BulletController bc = go.GetComponent<BulletController>();
-        bc.Init(10f, 5f, bulletRespawn.position, bulletRespawn.rotation);
+        bc.Init(10f, 5f, bulletRespawn.position, bulletRespawn.rotation, this.Damage);
     }
 
     private void OnEnable()

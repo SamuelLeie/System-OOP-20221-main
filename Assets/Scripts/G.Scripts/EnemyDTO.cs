@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemyDTO", menuName = "DTO")]
+[CreateAssetMenu(fileName = "EnemyDTO", menuName = "Resources/DTO/")]
 public class EnemyDTO : ScriptableObject
 {
-    public string name;
+    public string ename;
     public int damage;
-    public int _HP;
     public float speed;
-    public int _maxHP;
+    //public int _maxHP;
 }

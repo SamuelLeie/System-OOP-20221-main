@@ -14,6 +14,6 @@ public class MachineGun : Weapon
             bulletRespawn.rotation.eulerAngles.y,
             bulletRespawn.rotation.eulerAngles.z + randAngle
         );
-        bc.Init(10f, 5f, bulletRespawn.position, rotation);
+        bc.Init(10f, 5f, bulletRespawn.position, rotation, Damage);
     }
 }

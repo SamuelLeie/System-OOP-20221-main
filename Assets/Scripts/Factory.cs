@@ -5,6 +5,7 @@ using UnityEngine;
 public enum FactoryItem
 {
     None,
+    SquareEnemy,
     Bullet
 }
 
@@ -20,6 +21,11 @@ public class Factory : MonoBehaviour
     {
         Instance = this;
         prefabs.Add(FactoryItem.Bullet, Resources.Load<GameObject>("Prefabs/Bullet"));
+        //-------------------------------------------
+        prefabs.Add(FactoryItem.SquareEnemy, Resources.Load<GameObject>("Prefabs/SquareEnemy"));
+        Register(FactoryItem.SquareEnemy, 20);
+
+        Debug.Log(prefabs);
 
         Register(FactoryItem.Bullet, 300);
 

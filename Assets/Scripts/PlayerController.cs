@@ -26,10 +26,12 @@ public class PlayerController : PhysicsController
 
     public bool hasMove;
 
-    public float SniperCooldown = 3f;
+    public float SniperCooldown = 2f;
     public float CooldownTimer = 0f;
-    
-    
+
+    public UIManager uiManager;
+
+
 
     public bool HasMovement { 
         get {
@@ -82,6 +84,16 @@ public class PlayerController : PhysicsController
         }
     }
 
+    //------------------------------------
+    [SerializeField]
+    private int HP = 100;
+    protected override void Awake()
+    {
+        base.Awake();
+        this.gameObject.tag = "Player";
+        uiManager = FindObjectOfType<UIManager>();
+        uiManager.SetUpHealth(this.HP);
+    }
     private void Start()
     {
         weapons.AddRange(tf.GetComponentsInChildren<Weapon>());
@@ -114,7 +126,7 @@ public class PlayerController : PhysicsController
         };
 
         ChangeWeapon(0);
-        SniperCooldown = 3f;
+        SniperCooldown = 2f;
     }
 
     // Update is called once per frame
@@ -217,5 +229,20 @@ public class PlayerController : PhysicsController
     private void FireWeapon()
     {
         CurrentWeapon.Fire();
+    }
+
+    public void TakeDamage(int damage)
+    {
+        this.HP -= damage;
+        uiManager.OnTamageTaken(this.HP);
+        Die();
+    }
+
+    private void Die()
+    {
+        if (this.HP <= 0)
+        {
+            GameObject.Destroy(gameObject);
+        }
     }
 }

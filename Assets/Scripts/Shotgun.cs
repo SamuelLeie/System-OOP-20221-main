@@ -19,7 +19,7 @@ public class Shotgun : Weapon
     protected override void CreateBullets()
     {
         float angle = bulletRespawn.rotation.eulerAngles.z;
-        Debug.Log(angle);
+        //Debug.Log(angle);
         float angle0 = angle - (Spread / 2);
         float angleStep = Spread / (Pellets - 1);
         for (int i = 0; i < Pellets; i++)
@@ -27,7 +27,7 @@ public class Shotgun : Weapon
             Quaternion rotation = Quaternion.Euler(0, 0, angle0 + angleStep * i);
             GameObject go = Factory.Instance.GetObject(FactoryItem.Bullet);
             BulletController bc = go.GetComponent<BulletController>();
-            bc.Init(10f, 5f, bulletRespawn.position, rotation);
+            bc.Init(10f, 5f, bulletRespawn.position, rotation, Damage);
         }
     }
 }
