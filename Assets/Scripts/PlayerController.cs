@@ -26,6 +26,11 @@ public class PlayerController : PhysicsController
 
     public bool hasMove;
 
+    public float SniperCooldown = 3f;
+    public float CooldownTimer = 0f;
+    
+    
+
     public bool HasMovement { 
         get {
             return direction.magnitude > 0;
@@ -109,7 +114,7 @@ public class PlayerController : PhysicsController
         };
 
         ChangeWeapon(0);
-
+        SniperCooldown = 3f;
     }
 
     // Update is called once per frame
@@ -159,11 +164,27 @@ public class PlayerController : PhysicsController
 
     private void HandleWeapons()
     {
-        if(InputState.FireButton)
-        {
-            FireWeapon();
+            
+            if (InputState.FireButton && WeaponIndex != 2)
+            {
+                FireWeapon();
+            }
+            if (WeaponIndex == 2 && Input.GetMouseButton(0))
+            {
+
+                CooldownTimer += Time.deltaTime;
+                if(CooldownTimer > SniperCooldown)
+                {
+                    FireWeapon();
+                    CooldownTimer = 0f;
+                }
+                
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                CooldownTimer = 0f;
+            }
         }
-    }
 
     private void HandleChangeWeapons()
     {
