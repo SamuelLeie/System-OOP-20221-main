@@ -226,7 +226,7 @@ public class PlayerController : PhysicsController
     }
                                                         
 
-    private void FireWeapon()
+    public void FireWeapon()
     {
         CurrentWeapon.Fire();
     }

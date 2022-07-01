@@ -14,7 +14,7 @@ public class WeaponPickUp : MonoBehaviour
             gameObject.AddComponent<BoxCollider2D>();
             gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
             gameObject.GetComponent<BoxCollider2D>().size = new Vector2(0.1f, 0.1f);
-            if (gameObject.transform.parent.transform.parent.tag == "Player")
+            if (gameObject.transform.parent.transform.parent.transform.parent.tag == "Player")
             {
                 gameObject.GetComponent<BoxCollider2D>().enabled = false;
             }
@@ -23,9 +23,9 @@ public class WeaponPickUp : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && Input.GetKeyDown(KeyCode.F))
+        if (collision.tag == "Player" && (Input.GetKeyDown(KeyCode.F) || InputController.UICollectItem == true ))
         {
-            Debug.Log("Pickup weapon");
+            //Debug.Log("Pickup weapon");
             Player = collision.gameObject;
             ChangeItem();
         }
@@ -33,10 +33,10 @@ public class WeaponPickUp : MonoBehaviour
     public void ChangeItem()
     {
         //checks for all child, remember that is there is no child with name "Weapons" it WILL break
-        for (int i = 0; i < Player.transform.childCount; i++)
+        for (int i = 0; i < Player.transform.GetChild(0).transform.childCount; i++)
         {
             //if it's weapon
-            if (Player.transform.GetChild(i).transform.name == "Weapons")
+            if (Player.transform.GetChild(0).transform.GetChild(i).transform.name == "Weapons")
             {
                 //sets PlayerController
                 PC = Player.GetComponent<PlayerController>();
@@ -58,9 +58,9 @@ public class WeaponPickUp : MonoBehaviour
                 PC.weapons.Insert(PC.WeaponIndex, gameObject.GetComponent<Weapon>());
 
                 //sets as parent
-                gameObject.transform.SetParent(Player.transform.GetChild(i).transform);
+                gameObject.transform.SetParent(Player.transform.GetChild(0).transform.GetChild(i).transform);
 
-                //sets on correct position, at least it's supposed to CURRENTLY BROKEN
+                //sets on correct position
                 gameObject.transform.position = weaponSel.transform.position;
 
                 //sets correct rotation

@@ -37,12 +37,28 @@ public class RotateJoy : MonoBehaviour
         Vector2 v = new Vector2(lookJoy.Horizontal, lookJoy.Vertical);
         if (v.magnitude > 0.8f)
         {
-            pc.FireWeapon();
+
+            if (pc.WeaponIndex == 2 )
+            {
+
+                pc.CooldownTimer += Time.deltaTime;
+                if (pc.CooldownTimer > pc.SniperCooldown)
+                {
+                    pc.FireWeapon(); ;
+                    pc.CooldownTimer = 0f;
+                }
+
+            }else pc.FireWeapon();
+
+            if (v.magnitude == 0f)
+            {
+                pc.CooldownTimer = 0f;
+            }
         }
-        else
-        {
+        //else
+        //{
             UpdateLookJoystick();
-        }
+        //}
         //if (Mathf.Abs(lookJoy.Direction) >= .9f)
         //{
         //    pc.FireWeapon();

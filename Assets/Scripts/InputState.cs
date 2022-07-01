@@ -7,6 +7,9 @@ public static class InputState
     public static bool FireButton;
     public static bool ReloadButton;
 
+    public static bool CollectItem;
+    public static bool ReloadWeapon;
+
     public static bool WeaponPrev;
     public static bool WeaponNext;
 

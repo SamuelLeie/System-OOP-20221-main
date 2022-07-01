@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class InputController : MonoBehaviour
 {
+    static public bool UIWeaponNext;
+    static public bool UIWeaponPrev;
+    static public bool UICollectItem;
+    static public bool UIReloading;
+
+    public int CollectWeapon;
+    public int ReloadingWeapon;
+
     public int FireMouseButton;
     public int ChangeWeaponNext;
     public int ChangeWeaponPrev;
@@ -39,17 +47,33 @@ public class InputController : MonoBehaviour
         InputState.SelectWeapon3 = false;
         InputState.SelectWeapon4 = false;
 
-        if (Input.GetMouseButtonDown(FireMouseButton))
-        {
-            InputState.FireButton = true;
-        }
+        //if (Input.GetMouseButtonDown(FireMouseButton))
+        //{
+        //    InputState.FireButton = true;
+        //}
 
-        if(Input.GetMouseButtonUp(FireMouseButton))
+        //if(Input.GetMouseButtonUp(FireMouseButton))
+        //{
+        //    InputState.FireButton = false;
+        //}
+
+        if (Input.GetKeyDown((KeyCode)CollectWeapon) || UICollectItem)
         {
+            UICollectItem = false;
+            InputState.CollectItem = true;
+            Debug.Log("PickUp");
             InputState.FireButton = false;
         }
 
-        if (Input.GetKeyDown((KeyCode)ChangeWeaponPrev))
+        if (Input.GetKeyDown((KeyCode)ReloadingWeapon) || UIReloading)
+        {
+            UIReloading = false;
+            InputState.ReloadWeapon = true;
+            Debug.Log("Reloading...");
+            InputState.FireButton = false;
+        }
+
+        if (Input.GetKeyDown((KeyCode)ChangeWeaponPrev) || UIWeaponPrev)
         {
             InputState.WeaponPrev = true;
             InputState.FireButton = false;
@@ -60,7 +84,7 @@ public class InputController : MonoBehaviour
             InputState.WeaponPrev = false;
         }
 
-        if (Input.GetKeyDown((KeyCode)ChangeWeaponNext))
+        if (Input.GetKeyDown((KeyCode)ChangeWeaponNext) || UIWeaponNext)
         {
             InputState.WeaponNext = true;
             InputState.FireButton = false;

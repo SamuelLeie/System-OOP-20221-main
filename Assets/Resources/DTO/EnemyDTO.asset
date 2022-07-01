@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fa29803f04b3644fb6d93b0ab54b91b, type: 3}
+  m_Script: {fileID: 11500000, guid: 0100f9f514244d04d9b25e20d90a9aac, type: 3}
   m_Name: EnemyDTO
   m_EditorClassIdentifier: 
-  name: 
-  damage: 0
-  _HP: 0
-  speed: 0
-  _maxHP: 0
+  ename: 
+  damage: 10
+  speed: 5

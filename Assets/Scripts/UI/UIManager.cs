@@ -107,8 +107,8 @@ public class UIManager : MonoBehaviour
     //CHAMAR QUANDO INIMIGO LEVAR DANO - ATUALIZA BARRA DE VIDA DELE
     public void OnEnemyDamaged(GameObject enemy, int enemyCurrentHealth)
     {
-        //HealthBar enemyHPBar = enemy.transform.GetChild(0).GetComponentInChildren<HealthBar>();
-        HealthBar enemyHPBar = enemy.GetComponentInChildren<HealthBar>();
+        HealthBar enemyHPBar = enemy.transform.GetChild(1).GetComponentInChildren<HealthBar>();
+        //HealthBar enemyHPBar = enemy.GetComponentInChildren<HealthBar>();
         SetUpEnemyHealth(enemyHPBar, enemyCurrentHealth);
 
     }
