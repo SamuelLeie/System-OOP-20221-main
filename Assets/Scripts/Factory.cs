@@ -6,7 +6,8 @@ public enum FactoryItem
 {
     None,
     SquareEnemy,
-    Bullet
+    Bullet,
+    Rocket,
 }
 
 public class Factory : MonoBehaviour
@@ -21,6 +22,7 @@ public class Factory : MonoBehaviour
     {
         Instance = this;
         prefabs.Add(FactoryItem.Bullet, Resources.Load<GameObject>("Prefabs/Bullet"));
+        prefabs.Add(FactoryItem.Rocket, Resources.Load<GameObject>("Prefabs/Rocket"));
         //-------------------------------------------
         prefabs.Add(FactoryItem.SquareEnemy, Resources.Load<GameObject>("Prefabs/SquareEnemy"));
         Register(FactoryItem.SquareEnemy, 20);
@@ -28,6 +30,7 @@ public class Factory : MonoBehaviour
         Debug.Log(prefabs);
 
         Register(FactoryItem.Bullet, 300);
+        Register(FactoryItem.Rocket, 300);
 
     }
 
